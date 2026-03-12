@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trades', function (Blueprint $table) {
+        Schema::create('trade_offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from_user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('to_user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('status');
+            $table->foreignId('trade_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); 
+            $table->string('status')->default('pending');
             $table->timestamps();
+
+            $table->unique(['trade_id', 'user_id']);
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trades');
+        Schema::dropIfExists('trade_offers');
     }
 };

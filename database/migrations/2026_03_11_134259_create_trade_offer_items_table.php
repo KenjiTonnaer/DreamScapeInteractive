@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trades', function (Blueprint $table) {
+        Schema::create('trade_offer_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from_user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('to_user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('status');
+            $table->foreignId('trade_offer_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('item_id')->constrained()->cascadeOnDelete();
+            $table->unsignedInteger('quantity')->default(1);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trades');
+        Schema::dropIfExists('trade_offer_items');
     }
 };

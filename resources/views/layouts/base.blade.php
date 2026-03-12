@@ -17,19 +17,20 @@
                     {{ config('app.name', 'DreamScape Interactive') }}
                 </a>
             </div>
-
             <div class="justify-self-center flex items-center gap-6 text-sm">
-                <a href="{{ url('/') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Home</a>
-                <a href="#" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Catalogus</a>
-                <a href="#" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Inventaris</a>
-                <a href="#" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Trades</a>
-                <a href="#" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Contact</a>
+                <a href="{{ route('home') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Home</a>
+                <a href="{{ route('catalogus') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Catalog</a>
+                <a href="{{ route('inventaris') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Inventory</a>
+                <a href="{{ route('trades') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Trades</a>
+                <a href="{{ route('contact') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Contact</a>
             </div>
-
             <div class="justify-self-end flex items-center gap-4 text-sm">
                 @auth
                     <span class="text-gray-500">{{ auth()->user()->username ?? auth()->user()->name }}</span>
                     <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Dashboard</a>
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-black hover:underline hover:underline-offset-3">Admin</a>
+                    @endif
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

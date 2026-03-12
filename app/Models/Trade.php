@@ -31,4 +31,9 @@ class Trade extends Model
     {
         return $this->hasMany(TradeItem::class);
     }
+
+    public function wants(): HasMany
+    {
+        return $this->hasMany(TradeWant::class);
+    }
 }

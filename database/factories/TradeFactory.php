@@ -24,23 +24,28 @@ class TradeFactory extends Factory
     {
         $fromUserId = User::query()->inRandomOrder()->value('id') ?? User::factory()->create()->id;
 
-        $toUserId = User::query()
-            ->whereKeyNot($fromUserId)
-            ->inRandomOrder()
-            ->value('id') ?? User::factory()->create()->id;
+        $isOpenTrade = fake()->boolean(40); // 40% open trades
 
-        if ($fromUserId === $toUserId) {
-            $toUserId = User::factory()->create()->id;
+        $toUserId = null;
+        $status = 'open';
+
+        if (! $isOpenTrade) {
+            $toUserId = User::query()
+                ->whereKeyNot($fromUserId)
+                ->inRandomOrder()
+                ->value('id') ?? User::factory()->create()->id;
+
+            if ($fromUserId === $toUserId) {
+                $toUserId = User::factory()->create()->id;
+            }
+
+            $status = fake()->randomElement(['pending', 'accepted', 'rejected', 'cancelled']);
         }
 
         return [
             'from_user_id' => $fromUserId,
             'to_user_id' => $toUserId,
-            // Meer "pending" zodat je backlog-gevoel krijgt
-            'status' => fake()->randomElement([
-                'pending', 'pending', 'pending', 'pending',
-                'accepted', 'rejected', 'cancelled',
-            ]),
+            'status' => $status,
         ];
     }
 }

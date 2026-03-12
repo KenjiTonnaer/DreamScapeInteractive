@@ -22,10 +22,14 @@ class TradeItemFactory extends Factory
         $trade = Trade::query()->inRandomOrder()->first() ?? Trade::factory()->create();
         $itemId = Item::query()->inRandomOrder()->value('id') ?? Item::factory()->create()->id;
 
-        $fromUserId = fake()->randomElement([
+        $fromUserPool = array_filter([
             $trade->from_user_id,
             $trade->to_user_id,
         ]);
+
+        $fromUserId = fake()->randomElement(
+            !empty($fromUserPool) ? $fromUserPool : [$trade->from_user_id]
+        );
 
         return [
             'trade_id' => $trade->id,
